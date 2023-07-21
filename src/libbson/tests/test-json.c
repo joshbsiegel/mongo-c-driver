@@ -3555,6 +3555,36 @@ test_bson_as_json_with_opts_all_types (void)
    bson_destroy (&scope);
 }
 
+static void
+test_overflowing_exponent (void)
+{
+   {
+      bson_decimal128_t decimal128;
+      bson_decimal128_from_string ("0E+2147483648", &decimal128);
+   }
+   {
+      bson_decimal128_t decimal128;
+      bson_decimal128_from_string ("0E+2147483649", &decimal128);
+   }
+   {
+      bson_decimal128_t decimal128;
+      bson_decimal128_from_string ("0E+2147483650", &decimal128);
+   }
+
+   {
+      bson_decimal128_t decimal128;
+      bson_decimal128_from_string ("0E-2147483649", &decimal128);
+   }
+   {
+      bson_decimal128_t decimal128;
+      bson_decimal128_from_string ("0E-2147483650", &decimal128);
+   }
+   {
+      bson_decimal128_t decimal128;
+      bson_decimal128_from_string ("0E-2147483651", &decimal128);
+   }
+}
+
 void
 test_json_install (TestSuite *suite)
 {
@@ -3748,4 +3778,6 @@ test_json_install (TestSuite *suite)
    TestSuite_Add (suite,
                   "/bson/as_json_with_opts/all_types",
                   test_bson_as_json_with_opts_all_types);
+   TestSuite_Add (
+      suite, "/bson/test_overflowing_exponent", test_overflowing_exponent);
 }

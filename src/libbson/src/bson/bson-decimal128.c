@@ -583,7 +583,7 @@ bson_decimal128_from_string_w_len (const char *string,     /* IN */
 #endif
       int read_exponent = SSCANF (++str_read, "%d%n", &exponent, &nread);
       str_read += nread;
-
+      printf ("%d\n", exponent);
       if (!read_exponent || nread == 0) {
          BSON_DECIMAL128_SET_NAN (*dec);
          return false;
